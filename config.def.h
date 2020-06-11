@@ -26,6 +26,7 @@ static const char *const autostart[] = {
 	"picom", NULL,
 	"wal", "-R", NULL,
 	"sh", "date.sh", NULL,
+	"sxhkd", NULL,
 	NULL /* terminate */
 };
 
@@ -57,7 +58,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -69,10 +70,11 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-p", "Run:", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "alacritty", NULL };
-static const char *rangercmd[] = { "alacritty", "-e", "ranger", NULL};
+static const char *rangercmd[] = { "alacritty", "-e", "cfiles", NULL};
 static const char *slockcmd[] = { "slock", NULL};
+static const char *webcmd[] = { "firefox", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -80,6 +82,7 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_r,      spawn,          {.v = rangercmd} },
 	{ MODKEY,                       XK_a,      spawn,          {.v = slockcmd} },
+	{ MODKEY,                       XK_w,      spawn,          {.v = webcmd}},
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
