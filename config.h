@@ -4,6 +4,7 @@
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 10;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const int swallowfloating    = 0;        /* 1 means swallow floating windows by default */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "MesloLGS NF:size=10" };
@@ -21,10 +22,8 @@ static const char *colors[][3]      = {
 
 static const char *const autostart[] = {
 	"setxkbmap", "it", NULL,
-	"searx-run", NULL,
 	"udiskie", NULL,
-	"picom", NULL,
-	"wal", "-R", NULL,
+	"sh", ".fehbg", NULL,
 	"sh", "date.sh", NULL,
 	"sxhkd", NULL,
 	NULL /* terminate */
@@ -38,9 +37,10 @@ static const Rule rules[] = {
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class     instance  title           tags mask  isfloating  isterminal  noswallow  monitor */
+	{ "Gimp",    NULL,     NULL,           0,         1,          0,           0,        -1 },
+	{ "st",      NULL,     NULL,           0,         0,          1,          -1,        -1 },
+	{ NULL,      NULL,     "Event Tester", 0,         1,          0,           1,        -1 }, /* xev */
 };
 
 /* layout(s) */
@@ -74,7 +74,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-p", "Run:", "-m", dmenumon, "-f
 static const char *termcmd[]  = { "alacritty", NULL };
 static const char *rangercmd[] = { "alacritty", "-e", "cfiles", NULL};
 static const char *slockcmd[] = { "slock", NULL};
-static const char *webcmd[] = { "firefox", NULL};
+static const char *webcmd[] = { "firefox-bin", NULL};
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
